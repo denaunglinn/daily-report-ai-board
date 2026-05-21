@@ -201,3 +201,53 @@ From `manifest.json`:
 ## License
 
 Private project (`package.json`: `"private": true`). Add a license file if you plan to distribute.
+
+
+  Project Specs — Daily Report AI Board
+  
+  ---
+  AI / Libraries
+
+  ┌──────────────────────────┬────────────────────────────────┬─────────────────────────────────────────────────────────────────────────────────────┐
+  │           Name           │              Type              │                                      Used For                                       │
+  ├──────────────────────────┼────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────┤
+  │ Tesseract.js v7          │ Local OCR engine (open-source) │ Reads text from screenshot images — recognizes both Japanese and English characters │
+  ├──────────────────────────┼────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────┤
+  │ Custom rule-based parser │ Self-written logic (no AI)     │ Breaks down the OCR output into project names, tasks, and statuses                  │
+  └──────────────────────────┴────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────┘
+
+  ▎ No external AI API is used (no OpenAI / Claude / Gemini / etc.)
+  ▎ All processing runs entirely inside the browser — free, offline, and no data is sent anywhere.
+
+  ---
+  Languages & Tech Stack
+  
+  ┌────────────────────────────┬────────────────────────────────────────────────────────────────────────────────┐
+  │   Language / Technology    │                                    Used For                                    │
+  ├────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+  │ TypeScript                 │ All source code — components, logic, and type definitions                      │
+  ├────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤                                                                                
+  │ TSX (TypeScript + JSX)     │ Writing React UI components (layout, buttons, task board, etc.)                │
+  ├────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+  │ CSS                        │ Styling each component (layout, colors, animations)                            │
+  ├────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+  │ React 18                   │ UI framework — state management, screen transitions, component architecture    │
+  ├────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+  │ Vite 5                     │ Build tool — dev server, bundling, and optimization                            │
+  ├────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+  │ Chrome Extension API (MV3) │ chrome.storage.local for data persistence, controls the extension popup        │
+  ├────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+  │ WebAssembly (.wasm)        │ Runs the Tesseract Japanese OCR engine at near-native speed inside the browser │
+  └────────────────────────────┴────────────────────────────────────────────────────────────────────────────────┘
+
+  ---
+  Data Flow
+
+  Screenshot image
+    ↓ Tesseract.js  (WASM, runs locally in browser)
+  Raw OCR text (Japanese)
+    ↓ Rule-based parser  (TypeScript)
+  Task board  (projects + tasks + statuses)
+    ↓ Report generator  (TypeScript)
+  Slack-ready text  (with :done: / :wip: markers)
+
