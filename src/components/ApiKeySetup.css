@@ -1,0 +1,98 @@
+.api-setup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px;
+  text-align: center;
+}
+
+.api-setup__icon {
+  font-size: 36px;
+  margin-bottom: 2px;
+}
+
+.api-setup__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.api-setup__desc {
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+.api-setup__form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.api-setup__input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 12px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  background: #fff;
+  color: #111827;
+}
+
+.api-setup__input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.api-setup__input--error {
+  border-color: #dc2626;
+}
+
+.api-setup__error {
+  font-size: 11px;
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 6px 10px;
+  text-align: left;
+}
+
+.api-setup__btn {
+  padding: 10px;
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.api-setup__btn:hover:not(:disabled) {
+  background: #4f46e5;
+}
+
+.api-setup__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.api-setup__link {
+  font-size: 11px;
+  color: #6366f1;
+  text-decoration: none;
+  margin-top: 4px;
+}
+
+.api-setup__link:hover {
+  text-decoration: underline;
+}

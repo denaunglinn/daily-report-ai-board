@@ -1,0 +1,78 @@
+.upload-zone {
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  background: #ffffff;
+  outline: none;
+  user-select: none;
+}
+
+.upload-zone:hover {
+  border-color: #6366f1;
+  background: #fafafa;
+}
+
+.upload-zone:focus-visible {
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
+.upload-zone--dragging {
+  border-color: #6366f1;
+  border-style: solid;
+  background: #eef2ff;
+}
+
+.upload-zone__input {
+  display: none;
+}
+
+.upload-zone__icon {
+  font-size: 36px;
+  margin-bottom: 4px;
+  pointer-events: none;
+}
+
+.upload-zone__primary {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  pointer-events: none;
+}
+
+.upload-zone__secondary {
+  font-size: 12px;
+  color: #6b7280;
+  pointer-events: none;
+}
+
+.upload-zone__link {
+  color: #6366f1;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.upload-zone__hint {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 4px;
+  pointer-events: none;
+}
+
+.upload-zone__error {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 6px 10px;
+  width: 100%;
+  text-align: center;
+  pointer-events: none;
+}

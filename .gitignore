@@ -1,0 +1,5 @@
+node_modules/
+dist/
+public/tesseract-worker.min.js
+public/tesseract-core-simd-lstm.wasm.js
+public/tesseract-core-simd-lstm.wasm

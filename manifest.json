@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Daily Report AI Board",
+  "version": "1.0.0",
+  "description": "Transform Slack daily report screenshots into organized task boards",
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "Daily Report AI Board"
+  },
+  "background": {
+    "service_worker": "src/background/background.ts",
+    "type": "module"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://tessdata.projectnaptha.com/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; object-src 'self';"
+  }
+}
