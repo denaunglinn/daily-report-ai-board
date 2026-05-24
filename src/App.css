@@ -21,7 +21,7 @@ body {
 
 /* Header */
 .header {
-  background: #1a1a2e;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
   padding: 14px 18px;
   display: flex;
   align-items: center;
@@ -50,7 +50,7 @@ body {
 
 .header-text span {
   font-size: 10px;
-  color: #6b7280;
+  color: rgba(255, 255, 255, 0.65);
   letter-spacing: 0.03em;
 }
 
@@ -72,9 +72,25 @@ body {
   color: #9ca3af;
 }
 
+/* Header icon buttons (⚙ template, 📊 history) */
+.header-icon-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 3px 8px;
+  border-radius: 6px;
+  opacity: 1;
+  transition: background 0.15s, border-color 0.15s;
+  line-height: 1.4;
+  flex-shrink: 0;
+  color: #fff;
+}
+.header-icon-btn:first-of-type { margin-left: auto; }
+.header-icon-btn:hover { background: rgba(255,255,255,0.28); border-color: rgba(255,255,255,0.45); }
+
 /* Header free badge */
 .header-badge {
-  margin-left: auto;
   font-size: 9px;
   font-weight: 700;
   padding: 2px 6px;

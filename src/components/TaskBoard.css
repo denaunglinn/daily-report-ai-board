@@ -4,12 +4,12 @@
   gap: 10px;
 }
 
-/* ── Header ─────────────────────────────────────────── */
+/* ── Top bar ──────────────────────────────────────── */
 
-.board__header {
+.board__topbar {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
 }
 
 .board__back {
@@ -20,18 +20,56 @@
   cursor: pointer;
   padding: 0;
   font-weight: 500;
-  white-space: nowrap;
+}
+.board__back:hover { text-decoration: underline; }
+
+.board__copy-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 5px;
+  opacity: 0.55;
+  transition: opacity 0.15s, background 0.15s;
+}
+.board__copy-btn:hover { opacity: 1; background: #f3f4f6; }
+
+/* ── Stats row ────────────────────────────────────── */
+
+.board__stats {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  border-radius: 5px;
   flex-shrink: 0;
 }
 
-.board__back:hover { text-decoration: underline; }
+.stat-chip__icon { font-size: 11px; }
+.stat-chip__val  { font-size: 12px; font-weight: 700; }
+.stat-chip__label { font-size: 10px; font-weight: 500; }
+
+.stat-chip--project { background: #ede9fe; color: #5b21b6; }
+.stat-chip--wip     { background: #dbeafe; color: #1e40af; }
+.stat-chip--done    { background: #d1fae5; color: #065f46; }
 
 .board__progress {
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 6px;
-  min-width: 0;
+  gap: 5px;
+  margin-left: 2px;
 }
 
 .board__progress-bar {
@@ -53,53 +91,29 @@
 .board__progress-label {
   font-size: 10px;
   color: #6b7280;
-  white-space: nowrap;
   font-family: 'SF Mono', 'Fira Code', monospace;
-  font-weight: 500;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.board__copy-btn {
-  background: none;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  padding: 2px 5px;
-  border-radius: 5px;
-  opacity: 0.55;
-  transition: opacity 0.15s, background 0.15s;
-  flex-shrink: 0;
-  line-height: 1;
-}
-
-.board__copy-btn:hover {
-  opacity: 1;
-  background: #f3f4f6;
-}
-
-/* ── Scrollable list ─────────────────────────────────── */
+/* ── Scrollable list ──────────────────────────────── */
 
 .board__list {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 300px;
+  max-height: 280px;
   overflow-y: auto;
   padding-right: 3px;
 }
 
 .board__list::-webkit-scrollbar { width: 4px; }
 .board__list::-webkit-scrollbar-track { background: transparent; }
-.board__list::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 999px;
-}
+.board__list::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 999px; }
 
-/* ── Empty state ─────────────────────────────────────── */
+/* ── Empty state ──────────────────────────────────── */
 
-.board__empty {
-  text-align: center;
-  padding: 16px 4px;
-}
+.board__empty { text-align: center; padding: 16px 4px; }
 
 .board__empty-title {
   font-size: 13px;
@@ -136,7 +150,7 @@
   border-radius: 4px;
 }
 
-/* ── Project card ────────────────────────────────────── */
+/* ── Project card ─────────────────────────────────── */
 
 .project-card {
   background: #fff;
@@ -193,13 +207,9 @@
   transition: width 0.35s ease;
 }
 
-/* ── Task list ───────────────────────────────────────── */
+/* ── Task list ────────────────────────────────────── */
 
-.project-card__tasks {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+.project-card__tasks { list-style: none; padding: 0; margin: 0; }
 
 .task-item {
   display: flex;
@@ -209,7 +219,6 @@
   border-bottom: 1px solid #f3f4f6;
   transition: background 0.1s;
 }
-
 .task-item:last-child { border-bottom: none; }
 .task-item:hover { background: #fafafa; }
 
@@ -225,7 +234,7 @@
   line-height: 1.4;
 }
 
-/* ── Status badge (interactive button) ──────────────── */
+/* ── Status badge ─────────────────────────────────── */
 
 .task-badge {
   font-size: 10px;
@@ -240,12 +249,7 @@
   line-height: 1.5;
   font-family: inherit;
 }
-
-.task-badge:hover {
-  filter: brightness(0.9);
-  transform: scale(1.05);
-}
-
+.task-badge:hover  { filter: brightness(0.9); transform: scale(1.05); }
 .task-badge:active { transform: scale(0.96); }
 
 .task-badge--done    { background: #d1fae5; color: #065f46; }
@@ -253,20 +257,34 @@
 .task-badge--todo    { background: #f3f4f6; color: #6b7280; }
 .task-badge--blocked { background: #fee2e2; color: #991b1b; }
 
-/* ── Footer ─────────────────────────────────────────── */
+/* ── Footer ───────────────────────────────────────── */
 
-.board__new-btn {
-  width: 100%;
+.board__footer {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.board__new-btn,
+.board__generate-btn {
+  flex: 1;
   padding: 9px;
   border-radius: 8px;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   border: none;
-  background: #f3f4f6;
-  color: #374151;
   transition: background 0.15s;
-  flex-shrink: 0;
 }
 
+.board__new-btn {
+  background: #f3f4f6;
+  color: #374151;
+}
 .board__new-btn:hover { background: #e5e7eb; }
+
+.board__generate-btn {
+  background: #6366f1;
+  color: #ffffff;
+}
+.board__generate-btn:hover { background: #4f46e5; }

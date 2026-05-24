@@ -34,18 +34,20 @@ interface Props {
   onBack: () => void
   onClear: () => void
   onBoardUpdate: (projects: ParsedProject[]) => void
+  onGenerate: () => void
 }
 
-export function TaskBoard({ projects: initial, onBack, onClear, onBoardUpdate }: Props) {
+export function TaskBoard({ projects: initial, onBack, onClear, onBoardUpdate, onGenerate }: Props) {
   const [projects, setProjects] = useState(initial)
   const [copied, setCopied] = useState(false)
 
   useEffect(() => { setProjects(initial) }, [initial])
 
-  const allTasks  = projects.flatMap(p => p.tasks)
-  const total     = allTasks.length
-  const done      = allTasks.filter(t => t.status === '完了').length
-  const pct       = total > 0 ? Math.round((done / total) * 100) : 0
+  const allTasks   = projects.flatMap(p => p.tasks)
+  const totalTasks = allTasks.length
+  const doneTasks  = allTasks.filter(t => t.status === '完了').length
+  const wipTasks   = allTasks.filter(t => t.status === '進行中').length
+  const pct        = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0
 
   function cycleStatus(projectId: string, taskId: string) {
     const updated = projects.map(p => {
@@ -69,22 +71,38 @@ export function TaskBoard({ projects: initial, onBack, onClear, onBoardUpdate }:
 
   return (
     <div className="board">
-      {/* ── Header ─────────────────────────────────── */}
-      <div className="board__header">
+
+      {/* ── Top bar ───────────────────────────────── */}
+      <div className="board__topbar">
         <button className="board__back" onClick={onBack}>← テキスト</button>
+        <button className="board__copy-btn" onClick={handleCopy} title="Markdown としてコピー">
+          {copied ? '✓' : '📋'}
+        </button>
+      </div>
+
+      {/* ── Stats row ─────────────────────────────── */}
+      <div className="board__stats">
+        <div className="stat-chip stat-chip--project">
+          <span className="stat-chip__icon">📁</span>
+          <span className="stat-chip__val">{projects.length}</span>
+          <span className="stat-chip__label">プロジェクト</span>
+        </div>
+        <div className="stat-chip stat-chip--wip">
+          <span className="stat-chip__icon">🔄</span>
+          <span className="stat-chip__val">{wipTasks}</span>
+          <span className="stat-chip__label">進行中</span>
+        </div>
+        <div className="stat-chip stat-chip--done">
+          <span className="stat-chip__icon">✅</span>
+          <span className="stat-chip__val">{doneTasks}</span>
+          <span className="stat-chip__label">完了</span>
+        </div>
         <div className="board__progress">
           <div className="board__progress-bar">
             <div className="board__progress-fill" style={{ width: `${pct}%` }} />
           </div>
-          <span className="board__progress-label">{done}/{total} 完了</span>
+          <span className="board__progress-label">{pct}%</span>
         </div>
-        <button
-          className="board__copy-btn"
-          onClick={handleCopy}
-          title="Markdown としてコピー"
-        >
-          {copied ? '✓' : '📋'}
-        </button>
       </div>
 
       {/* ── Project list ───────────────────────────── */}
@@ -94,10 +112,10 @@ export function TaskBoard({ projects: initial, onBack, onClear, onBoardUpdate }:
             <p className="board__empty-title">タスクが見つかりませんでした</p>
             <div className="board__empty-guide">
               <p className="board__empty-hint">認識される形式の例</p>
+              <code>e 英語王  （●がeに変換）</code>
+              <code>o タスク名  （○がoに変換）</code>
               <code>■ プロジェクト名</code>
-              <code>【プロジェクト名】</code>
               <code>・ タスク内容 完了</code>
-              <code>- タスク内容 進行中</code>
             </div>
           </div>
         ) : (
@@ -114,10 +132,7 @@ export function TaskBoard({ projects: initial, onBack, onClear, onBoardUpdate }:
                   <div className="project-card__stat">
                     <span className="project-card__count">{pdone}/{ptotal}</span>
                     <div className="project-card__bar">
-                      <div
-                        className="project-card__bar-fill"
-                        style={{ width: `${ppct}%` }}
-                      />
+                      <div className="project-card__bar-fill" style={{ width: `${ppct}%` }} />
                     </div>
                   </div>
                 </div>
@@ -149,9 +164,10 @@ export function TaskBoard({ projects: initial, onBack, onClear, onBoardUpdate }:
       </div>
 
       {/* ── Footer ─────────────────────────────────── */}
-      <button className="board__new-btn" onClick={onClear}>
-        新しい日報
-      </button>
+      <div className="board__footer">
+        <button className="board__new-btn" onClick={onClear}>新しい日報</button>
+        <button className="board__generate-btn" onClick={onGenerate}>日報を生成</button>
+      </div>
     </div>
   )
 }

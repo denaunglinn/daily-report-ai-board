@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { settingsStorage, type Settings } from '@/storage/settingsStorage'
+import { useState, useEffect, useCallback } from 'react'
+import { settingsStorage, DEFAULT_TEMPLATE, type Settings, type ReportTemplate } from '@/storage/settingsStorage'
 
 export function useSettings() {
   const [settings, setSettings] = useState<Settings | null>(null)
@@ -12,16 +12,19 @@ export function useSettings() {
     })
   }, [])
 
-  async function saveSettings(apiKey: string): Promise<void> {
-    const next = { apiKey }
-    await settingsStorage.save(next)
-    setSettings(next)
-  }
+  const template: ReportTemplate = settings?.template ?? DEFAULT_TEMPLATE
 
-  async function clearSettings(): Promise<void> {
-    await settingsStorage.clear()
-    setSettings(null)
-  }
+  const saveTemplate = useCallback(async (t: ReportTemplate) => {
+    await settingsStorage.save({ template: t })
+    const updated = await settingsStorage.load()
+    setSettings(updated)
+  }, [])
 
-  return { settings, loading, saveSettings, clearSettings }
+  const resetTemplate = useCallback(async () => {
+    await settingsStorage.save({ template: DEFAULT_TEMPLATE })
+    const updated = await settingsStorage.load()
+    setSettings(updated)
+  }, [])
+
+  return { settings, loading, template, saveTemplate, resetTemplate }
 }

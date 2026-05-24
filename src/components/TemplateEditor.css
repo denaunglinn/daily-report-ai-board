@@ -1,0 +1,147 @@
+.tmpl {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+}
+
+/* ── Top bar ─────────────────────────────────────── */
+
+.tmpl__topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tmpl__back {
+  background: none;
+  border: none;
+  font-size: 12px;
+  color: #6366f1;
+  cursor: pointer;
+  padding: 0;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.tmpl__back:hover { text-decoration: underline; }
+
+.tmpl__title {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  text-align: center;
+}
+
+.tmpl__reset {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 5px;
+  opacity: 0.45;
+  transition: opacity 0.15s, background 0.15s;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+.tmpl__reset:hover { opacity: 1; background: #f3f4f6; }
+
+/* ── Body ────────────────────────────────────────── */
+
+.tmpl__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.tmpl__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tmpl__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tmpl__optional {
+  font-size: 9px;
+  font-weight: 400;
+  color: #9ca3af;
+  background: #f3f4f6;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.tmpl__input {
+  width: 100%;
+  padding: 7px 10px;
+  font-size: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: #fff;
+  color: #111827;
+  font-family: inherit;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+.tmpl__input:focus {
+  outline: none;
+  border-color: #6366f1;
+}
+.tmpl__input::placeholder { color: #d1d5db; }
+
+/* ── Preview ─────────────────────────────────────── */
+
+.tmpl__preview-box {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tmpl__preview-label {
+  font-size: 9px;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 6px 10px 0;
+  margin: 0;
+}
+
+.tmpl__preview {
+  margin: 0;
+  padding: 6px 10px 10px;
+  font-size: 11px;
+  font-family: 'Hiragino Sans', 'SF Mono', monospace;
+  line-height: 1.7;
+  color: #374151;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* ── Save button ─────────────────────────────────── */
+
+.tmpl__save-btn {
+  width: 100%;
+  padding: 9px;
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.tmpl__save-btn:hover { background: #4f46e5; }

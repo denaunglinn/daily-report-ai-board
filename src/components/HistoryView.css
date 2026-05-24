@@ -1,0 +1,342 @@
+.hist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+}
+
+/* ── Top bar ────────────────────────────────────── */
+
+.hist__topbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hist__back {
+  background: none;
+  border: none;
+  font-size: 12px;
+  color: #6366f1;
+  cursor: pointer;
+  padding: 0;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.hist__back:hover { text-decoration: underline; }
+
+.hist__title {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  text-align: center;
+}
+
+.hist__csv-btn {
+  background: none;
+  border: 1px solid #e5e7eb;
+  font-size: 10px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 3px 7px;
+  border-radius: 5px;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+.hist__csv-btn:hover:not(:disabled) { background: #f3f4f6; color: #374151; }
+.hist__csv-btn:disabled { opacity: 0.35; cursor: default; }
+
+.hist__clear-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 5px;
+  opacity: 0.45;
+  transition: opacity 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+.hist__clear-btn:hover { opacity: 1; background: #fee2e2; }
+
+/* ── Body ───────────────────────────────────────── */
+
+.hist__body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 3px;
+}
+
+.hist__body::-webkit-scrollbar { width: 4px; }
+.hist__body::-webkit-scrollbar-track { background: transparent; }
+.hist__body::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 999px; }
+
+/* ── Weekly chart ───────────────────────────────── */
+
+.week-chart {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px 12px 10px;
+  flex-shrink: 0;
+}
+
+.week-chart__label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 8px;
+}
+
+.week-chart__bars {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  height: 72px;
+}
+
+.week-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.week-bar__pct {
+  font-size: 8px;
+  color: #9ca3af;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  min-height: 10px;
+}
+
+.week-bar__track {
+  width: 100%;
+  height: 36px;
+  background: #f3f4f6;
+  border-radius: 4px 4px 2px 2px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.week-bar__fill {
+  width: 100%;
+  background: linear-gradient(180deg, #6366f1, #4f46e5);
+  border-radius: 3px 3px 0 0;
+  transition: height 0.4s ease;
+  min-height: 0;
+}
+
+.week-bar__fill--future {
+  background: #e5e7eb;
+}
+
+.week-bar--today .week-bar__track { background: #ede9fe; }
+.week-bar--today .week-bar__fill  { background: linear-gradient(180deg, #10b981, #059669); }
+.week-bar--today .week-bar__day   { color: #059669; font-weight: 700; }
+
+.week-bar__day {
+  font-size: 10px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.week-bar__score {
+  font-size: 8px;
+  color: #9ca3af;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  white-space: nowrap;
+}
+
+/* ── Section ────────────────────────────────────── */
+
+.hist-section {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.hist-section__head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.hist-section__label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #374151;
+  min-width: 28px;
+}
+
+.hist-agg-done  { font-size: 13px; font-weight: 700; color: #059669; }
+.hist-agg-sep   { font-size: 11px; color: #9ca3af; margin: 0 1px; }
+.hist-agg-total { font-size: 12px; font-weight: 600; color: #6b7280; }
+.hist-agg-unit  { font-size: 10px; color: #9ca3af; margin-left: 2px; }
+
+.hist-section__agg {
+  display: flex;
+  align-items: baseline;
+  gap: 1px;
+  margin-left: 4px;
+}
+
+.hist-section__bar {
+  flex: 1;
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.hist-section__bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.hist-section__pct {
+  font-size: 10px;
+  color: #6b7280;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-weight: 600;
+  white-space: nowrap;
+  min-width: 28px;
+  text-align: right;
+}
+
+/* ── Empty state ────────────────────────────────── */
+
+.hist-empty {
+  font-size: 11px;
+  color: #9ca3af;
+  text-align: center;
+  padding: 10px;
+  margin: 0;
+}
+
+/* ── Cards list ─────────────────────────────────── */
+
+.hist-cards {
+  display: flex;
+  flex-direction: column;
+}
+
+.hist-card {
+  padding: 7px 12px;
+  border-bottom: 1px solid #f3f4f6;
+}
+.hist-card:last-child { border-bottom: none; }
+
+.hist-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.hist-card__time {
+  font-size: 10px;
+  color: #9ca3af;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.hist-card__score {
+  font-size: 11px;
+  font-weight: 700;
+  color: #059669;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.hist-card__projects {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hist-card__project {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.hist-card__proj-name {
+  font-size: 11px;
+  color: #374151;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.hist-card__proj-stat {
+  font-size: 10px;
+  color: #6b7280;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  flex-shrink: 0;
+}
+
+/* ── Pinned card ────────────────────────────────── */
+
+.pin-card {
+  padding: 7px 12px;
+  border-bottom: 1px solid #f3f4f6;
+}
+.pin-card:last-child { border-bottom: none; }
+
+.pin-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.pin-card__actions {
+  display: flex;
+  gap: 4px;
+}
+
+.pin-card__btn {
+  background: none;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 4px;
+  opacity: 0.5;
+  transition: opacity 0.15s, background 0.15s;
+}
+.pin-card__btn:hover { opacity: 1; background: #f3f4f6; }
+.pin-card__btn--del:hover { background: #fee2e2; }
+
+.pin-card__text {
+  margin: 0;
+  font-size: 10px;
+  font-family: 'Hiragino Sans', 'SF Mono', monospace;
+  color: #6b7280;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: #f9fafb;
+  border-radius: 4px;
+  padding: 5px 8px;
+}

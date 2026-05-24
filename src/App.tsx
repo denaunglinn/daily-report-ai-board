@@ -1,22 +1,37 @@
+import { useState } from 'react'
 import { useReport } from '@/hooks/useReport'
 import { useOcr } from '@/hooks/useOcr'
+import { useHistory } from '@/hooks/useHistory'
+import { usePinned } from '@/hooks/usePinned'
+import { useSettings } from '@/hooks/useSettings'
 import { parseReport } from '@/parser/reportParser'
+import { generateDailyReport } from '@/parser/reportGenerator'
 import type { ParsedProject } from '@/types'
 import { UploadZone } from '@/components/UploadZone'
 import { ImagePreview } from '@/components/ImagePreview'
 import { ExtractedText } from '@/components/ExtractedText'
 import { TaskBoard } from '@/components/TaskBoard'
+import { ReportOutput } from '@/components/ReportOutput'
+import { HistoryView } from '@/components/HistoryView'
+import { TemplateEditor } from '@/components/TemplateEditor'
 import './App.css'
 
-type View = 'loading' | 'upload' | 'preview' | 'result' | 'board'
+type View = 'loading' | 'upload' | 'preview' | 'result' | 'board' | 'output'
+type Overlay = null | 'history' | 'template'
 
 export default function App() {
   const { report, loading, saveReport, updateReport, clearReport } = useReport()
   const { state: ocrState, progress, error: ocrError, extract, reset: resetOcr } = useOcr()
+  const { records, addRecord, clearAll: clearHistory } = useHistory()
+  const { pinned, pin, unpin, clearAll: clearPinned, isPinned } = usePinned()
+  const { template, saveTemplate, resetTemplate } = useSettings()
+  const [generatedText, setGeneratedText] = useState<string | null>(null)
+  const [overlay, setOverlay] = useState<Overlay>(null)
 
   function getView(): View {
     if (loading) return 'loading'
     if (!report) return 'upload'
+    if (generatedText !== null) return 'output'
     if (report.parsedBoard) return 'board'
     if (report.rawText) return 'result'
     return 'preview'
@@ -41,6 +56,12 @@ export default function App() {
     await updateReport({ parsedBoard })
   }
 
+  async function handleGenerate() {
+    if (!report?.parsedBoard) return
+    setGeneratedText(generateDailyReport(report.parsedBoard, template))
+    await addRecord(report.fileName, report.parsedBoard)
+  }
+
   async function handleBackFromResult() {
     await updateReport({ rawText: null, status: 'pending' })
     resetOcr()
@@ -50,11 +71,17 @@ export default function App() {
     await updateReport({ parsedBoard: null })
   }
 
+  function handleBackFromOutput() {
+    setGeneratedText(null)
+  }
+
   async function handleBoardUpdate(projects: ParsedProject[]) {
     await updateReport({ parsedBoard: projects })
   }
 
   async function handleClear() {
+    setGeneratedText(null)
+    setOverlay(null)
     await clearReport()
     resetOcr()
   }
@@ -67,15 +94,44 @@ export default function App() {
           <h1>Daily Report AI Board</h1>
           <span>Slack 日報 → タスクボード</span>
         </div>
-        <span className="header-badge">Free</span>
+        <button
+          className="header-icon-btn"
+          onClick={() => setOverlay(v => v === 'template' ? null : 'template')}
+          title="テンプレート編集"
+        >⚙</button>
+        <button
+          className="header-icon-btn"
+          onClick={() => setOverlay(v => v === 'history' ? null : 'history')}
+          title="履歴"
+        >📊</button>
       </header>
 
       <main className="content">
-        {view === 'loading' && <div className="loading">読み込み中…</div>}
+        {overlay === 'history' && (
+          <HistoryView
+            records={records}
+            pinned={pinned}
+            onClose={() => setOverlay(null)}
+            onClear={clearHistory}
+            onUnpin={unpin}
+            onClearPinned={clearPinned}
+          />
+        )}
 
-        {view === 'upload' && <UploadZone onFile={handleFile} />}
+        {overlay === 'template' && (
+          <TemplateEditor
+            template={template}
+            onSave={saveTemplate}
+            onReset={resetTemplate}
+            onClose={() => setOverlay(null)}
+          />
+        )}
 
-        {view === 'preview' && report && (
+        {!overlay && view === 'loading' && <div className="loading">読み込み中…</div>}
+
+        {!overlay && view === 'upload' && <UploadZone onFile={handleFile} />}
+
+        {!overlay && view === 'preview' && report && (
           <ImagePreview
             report={report}
             onRemove={handleClear}
@@ -86,7 +142,7 @@ export default function App() {
           />
         )}
 
-        {view === 'result' && report && (
+        {!overlay && view === 'result' && report && (
           <ExtractedText
             report={report}
             onBack={handleBackFromResult}
@@ -95,18 +151,33 @@ export default function App() {
           />
         )}
 
-        {view === 'board' && report?.parsedBoard && (
+        {!overlay && view === 'board' && report?.parsedBoard && (
           <TaskBoard
             projects={report.parsedBoard}
             onBack={handleBackFromBoard}
             onClear={handleClear}
             onBoardUpdate={handleBoardUpdate}
+            onGenerate={handleGenerate}
+          />
+        )}
+
+        {!overlay && view === 'output' && generatedText !== null && (
+          <ReportOutput
+            text={generatedText}
+            isPinned={isPinned(generatedText)}
+            onBack={handleBackFromOutput}
+            onClear={handleClear}
+            onPin={() => pin(generatedText)}
+            onUnpin={() => {
+              const p = pinned.find(x => x.text === generatedText)
+              if (p) unpin(p.id)
+            }}
           />
         )}
       </main>
 
       <footer className="footer">
-        <span className="footer-version">v1.0.0</span>
+        <span className="footer-version">v1.1.0</span>
         <div className="footer-tech">
           <span className="tech-tag">Tesseract</span>
           <span className="tech-tag">React</span>
