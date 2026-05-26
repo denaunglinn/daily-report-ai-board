@@ -1,3 +1,5 @@
+(日本語）ー ****** English Version is below.
+
 # Daily Report AI Board
 
 Slack の日報スクリーンショットを、編集可能なタスクボードと整形済みの日報テキストに変換する Chrome 拡張機能です。OCR は Tesseract.js でブラウザ内のみで実行されるため、API キーは不要です。
@@ -97,3 +99,155 @@ scripts/
 ## ライセンス
 
 プライベートプロジェクト（`package.json`: `"private": true`）。配布する場合はライセンスファイルを追加してください。
+
+---------------------
+
+# Daily Report AI Board
+
+A Chrome extension that turns Slack daily-report screenshots into an editable task board and formatted daily report text. OCR runs entirely in the browser with Tesseract.js—no API key required.
+
+## Features
+
+- **Screenshot upload** — Drop or select a PNG/JPEG of a Slack daily report
+- **OCR (Japanese + English)** — On-device text extraction via Tesseract.js
+- **Smart parsing** — Groups lines into projects and tasks; detects status (完了 / 進行中 / 未着手 / ブロック中); filters greetings and boilerplate
+- **Task board** — Edit tasks, cycle status with one click, view progress, copy as Markdown
+- **Report generator** — Produces a clean `お疲れ様です。` / `本日の作業` block ready to paste back into Slack
+- **History** — Tracks generated reports with day / week / month completion stats (stored locally in `chrome.storage`)
+
+## How it works
+
+```mermaid
+flowchart LR
+  A[Upload screenshot] --> B[OCR with Tesseract]
+  B --> C[Parse text into projects/tasks]
+  C --> D[Task board UI]
+  D --> E[Generate daily report]
+  E --> F[Copy / history]
+```
+
+1. Open the extension popup and upload a screenshot.
+2. Run **テキスト抽出** to OCR the image (first run downloads language data from tessdata).
+3. Review extracted text, then **解析** to build the board.
+4. Adjust tasks on the board, then **日報を生成** to get formatted output.
+5. Use the **📊** button in the header to view history and completion trends.
+
+## Requirements
+
+- [Node.js](https://nodejs.org/) 18+ (for building)
+- Google Chrome or Chromium-based browser
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Copy Tesseract worker/WASM assets and watch-build the extension
+npm run dev
+```
+
+After `npm run dev`, load the unpacked extension from the `dist/` folder (see [Load the extension](#load-the-extension) below). Rebuilds happen automatically on file changes.
+
+Other scripts:
+
+| Command | Description |
+|---------|-------------|
+| `npm run build` | Production build to `dist/` |
+| `npm run typecheck` | TypeScript check without emit |
+| `npm run prebuild` | Copies Tesseract assets into `public/` (runs before `build`) |
+
+## Load the extension
+
+1. Run `npm run build` (or `npm run dev` for development).
+2. Open Chrome → **Extensions** → enable **Developer mode**.
+3. Click **Load unpacked** and select the `dist/` directory.
+
+The popup opens from the toolbar icon.
+
+## Project structure
+
+```
+src/
+  components/     # UI (upload, preview, board, output, history)
+  hooks/          # Report, OCR, settings, history state
+  parser/         # reportParser.ts, reportGenerator.ts
+  services/       # ocrService.ts (Tesseract)
+  storage/        # chrome.storage wrappers
+  background/     # MV3 service worker
+scripts/
+  copy-tesseract.mjs   # Bundles Tesseract worker + WASM for the extension
+```
+
+## Tech stack
+
+- **React 18** + **TypeScript**
+- **Vite** with [@crxjs/vite-plugin](https://crxjs.dev/vite-plugin) (Manifest V3)
+- **tesseract.js** — Japanese (`jpn`) and English (`eng`) OCR
+- **chrome.storage** — Persist current report and history
+
+## Permissions
+
+From `manifest.json`:
+
+- `storage` — Save report state and history locally
+- `https://tessdata.projectnaptha.com/*` — Download OCR language traineddata on first use
+
+## Privacy
+
+- Screenshots and parsed data stay on your device (`chrome.storage.local`).
+- OCR language files are fetched from Project Naptha’s tessdata CDN when needed; image recognition itself runs locally in the extension.
+
+## License
+
+Private project (`package.json`: `"private": true`). Add a license file if you plan to distribute.
+
+
+  Project Specs — Daily Report AI Board
+  
+  ---
+  AI / Libraries
+
+  ┌──────────────────────────┬────────────────────────────────┬─────────────────────────────────────────────────────────────────────────────────────┐
+  │           Name           │              Type              │                                      Used For                                       │
+  ├──────────────────────────┼────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────┤
+  │ Tesseract.js v7          │ Local OCR engine (open-source) │ Reads text from screenshot images — recognizes both Japanese and English characters │
+  ├──────────────────────────┼────────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────┤
+  │ Custom rule-based parser │ Self-written logic (no AI)     │ Breaks down the OCR output into project names, tasks, and statuses                  │
+  └──────────────────────────┴────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────┘
+
+  ▎ No external AI API is used (no OpenAI / Claude / Gemini / etc.)
+  ▎ All processing runs entirely inside the browser — free, offline, and no data is sent anywhere.
+
+  ---
+  Languages & Tech Stack
+  
+  ┌────────────────────────────┬────────────────────────────────────────────────────────────────────────────────┐
+  │   Language / Technology    │                                    Used For                                    │
+  ├────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+  │ TypeScript                 │ All source code — components, logic, and type definitions                      │
+  ├────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤                                                                                
+  │ TSX (TypeScript + JSX)     │ Writing React UI components (layout, buttons, task board, etc.)                │
+  ├────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+  │ CSS                        │ Styling each component (layout, colors, animations)                            │
+  ├────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+  │ React 18                   │ UI framework — state management, screen transitions, component architecture    │
+  ├────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+  │ Vite 5                     │ Build tool — dev server, bundling, and optimization                            │
+  ├────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+  │ Chrome Extension API (MV3) │ chrome.storage.local for data persistence, controls the extension popup        │
+  ├────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+  │ WebAssembly (.wasm)        │ Runs the Tesseract Japanese OCR engine at near-native speed inside the browser │
+  └────────────────────────────┴────────────────────────────────────────────────────────────────────────────────┘
+
+  ---
+  Data Flow
+
+  Screenshot image
+    ↓ Tesseract.js  (WASM, runs locally in browser)
+  Raw OCR text (Japanese)
+    ↓ Rule-based parser  (TypeScript)
+  Task board  (projects + tasks + statuses)
+    ↓ Report generator  (TypeScript)
+  Slack-ready text  (with :done: / :wip: markers)
+
