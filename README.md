@@ -35,6 +35,53 @@ flowchart LR
 - [Node.js](https://nodejs.org/) 18 以上（ビルド用）
 - Google Chrome または Chromium 系ブラウザ
 
+## 他の端末でのセットアップ手順
+
+### 1. ソースコードを取得する
+
+**Git を使う場合**
+```bash
+git clone https://github.com/denaunglin/daily-report-ai-board.git
+cd daily-report-ai-board
+```
+
+**ZIP でダウンロードする場合**
+1. GitHub のリポジトリページを開く
+2. **Code** → **Download ZIP** をクリック
+3. ZIPを解凍し、ターミナルでそのフォルダに移動する
+
+### 2. 依存関係をインストールする
+
+```bash
+npm install
+```
+
+### 3. 拡張機能をビルドする
+
+```bash
+npm run build
+```
+`dist/` フォルダが生成される。これがビルド済みの拡張機能本体。
+
+### 4. Chrome に読み込む
+
+1. Chrome で `chrome://extensions` を開く
+2. 右上の **デベロッパーモード** をオンにする
+3. **パッケージ化されていない拡張機能を読み込む** をクリック
+4. プロジェクト内の **`dist`** フォルダを選択する
+5. 拡張機能が Chrome のツールバーに追加される
+
+### 5. ツールバーにピン留めする（推奨）
+
+1. Chrome ツールバーの 🧩 アイコンをクリック
+2. **Daily Report AI Board** を見つけてピンアイコン 📌 をクリック
+
+### 注意事項
+
+- 初回の OCR 実行時に日本語モデルファイル（約10MB）がダウンロードされる（1回のみ）
+- 2回目以降はオフラインでも動作する
+- ソースコードを更新した場合は `npm run build` を再実行し、`chrome://extensions` で 🔄 リロードボタンを押す
+
 ## 開発
 
 ```bash
@@ -136,6 +183,50 @@ flowchart LR
 
 - [Node.js](https://nodejs.org/) 18+ (for building)
 - Google Chrome or Chromium-based browser
+
+## Getting Started (Local Setup for Other Users)
+
+### Step 1 — Get the source code
+
+**Option A: Clone with Git**
+```bash
+git clone https://github.com/denaunglin/daily-report-ai-board.git
+cd daily-report-ai-board
+```
+
+**Option B: Download ZIP**
+1. Go to the GitHub repository page
+2. Click **Code** → **Download ZIP**
+3. Extract the ZIP and open a terminal inside the folder
+
+### Step 2 — Install dependencies
+```bash
+npm install
+```
+
+### Step 3 — Build the extension
+```bash
+npm run build
+```
+This creates a `dist/` folder — that is the built extension.
+
+### Step 4 — Load into Chrome
+
+1. Open Chrome and go to **`chrome://extensions`**
+2. Enable **Developer mode** (toggle in the top-right corner)
+3. Click **Load unpacked**
+4. Select the **`dist`** folder inside the project directory
+5. The extension will appear in your Chrome toolbar
+
+### Step 5 — Pin the extension (recommended)
+1. Click the puzzle piece icon 🧩 in the Chrome toolbar
+2. Find **Daily Report AI Board** and click the pin icon 📌
+
+### Notes
+
+- The first OCR run downloads the Japanese language model (~10 MB) — this is normal and only happens once
+- After the first run, the extension works fully offline
+- If you update the source code, run `npm run build` again and click the 🔄 reload button on `chrome://extensions`
 
 ## Development
 
